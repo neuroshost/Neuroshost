@@ -1,0 +1,3 @@
+import "./globals.css";
+export const metadata={title:"Neuroshost Billing",description:"Neuroshost Billing & Hosting"};
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="fr"><body>{children}<script dangerouslySetInnerHTML={{__html:`fetch('/api/public/settings').then(r=>r.ok?r.json():null).then(s=>{if(!s)return;document.documentElement.lang=s.default_language||'fr';if(s.favicon){let l=document.querySelector('link[rel="icon"]');if(!l){l=document.createElement('link');l.rel='icon';document.head.appendChild(l)}l.href=s.favicon}}).catch(()=>{})`}} /></body></html>}

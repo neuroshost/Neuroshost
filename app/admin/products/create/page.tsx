@@ -1,0 +1,3 @@
+import {redirect} from "next/navigation";import {requireAdmin} from "@/lib/auth";import {query} from "@/lib/db";import AdminShell from "@/components/AdminShell";import ProductForm from "@/components/ProductForm";
+export const dynamic="force-dynamic";
+export default async function CreateProduct(){try{await requireAdmin()}catch{redirect("/admin/login")}const cats=await query<any[]>("SELECT * FROM categories ORDER BY sort_order,name");const servers=await query<any[]>("SELECT * FROM servers WHERE enabled=1 ORDER BY name");const products=await query<any[]>("SELECT id,name FROM products ORDER BY name");return <AdminShell title="Créer Product"><ProductForm categories={cats} servers={servers} products={products}/></AdminShell>}

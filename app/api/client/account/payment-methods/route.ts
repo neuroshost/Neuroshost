@@ -1,0 +1,2 @@
+import { NextRequest,NextResponse } from "next/server";import { requireClient } from "@/lib/auth";import { query } from "@/lib/db";
+export async function POST(req:NextRequest){const s=await requireClient().catch(()=>null);if(!s)return new NextResponse("Unauthorized",{status:401});const f=await req.formData();const gateway=String(f.get("gateway")||"Stripe");await query("INSERT INTO payment_methods(user_id,gateway,label) VALUES(?,?,?)",[Number(s.id),gateway,gateway]);return NextResponse.redirect(new URL("/client/account/payment-methods?saved=1",req.url),303)}

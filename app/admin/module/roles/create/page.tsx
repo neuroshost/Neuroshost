@@ -1,0 +1,1 @@
+import {redirect} from "next/navigation";import {requireAdmin} from "@/lib/auth";import AdminShell from "@/components/AdminShell";import {RoleForm} from "@/components/ModuleForms";export const dynamic="force-dynamic";export default async function Page(){try{await requireAdmin()}catch{redirect("/admin/login")}return <AdminShell title="Créer Role"><RoleForm/></AdminShell>}
