@@ -1,7 +1,7 @@
 import { query } from "../core/database.mjs";
 import { ChannelType, PermissionFlagsBits, EmbedBuilder } from "discord.js";
 
-const DEFAULT_TICKET_CATEGORY_ID = "1549681145938186340";
+const DEFAULT_TICKET_CATEGORY_ID = "1549677677886312519";
 
 export function ticketChannelName(id, subject) {
   const clean = String(subject || "ticket").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 70) || "ticket";

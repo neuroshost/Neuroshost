@@ -639,6 +639,23 @@ async function initializeDatabase(database: mysql.Pool): Promise<void> {
     }
   }
 
+  const orderPaymentColumns = [
+    ["gateway", "VARCHAR(100) NULL"],
+    ["external_id", "VARCHAR(191) NULL"],
+    ["paid_at", "DATETIME NULL"]
+  ] as const;
+  for (const [name, definition] of orderPaymentColumns) {
+    const [rows] = await database.query<any[]>(`SELECT COUNT(*) AS count FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='orders' AND COLUMN_NAME=?`, [name]);
+    if (Number(rows[0]?.count ?? 0) === 0) { try { await database.execute(`ALTER TABLE orders ADD COLUMN \`${name}\` ${definition}`); } catch {} }
+  }
+  const orderItemColumns = [["plan_id", "INT NULL"], ["coupon_id", "INT NULL"]] as const;
+  for (const [name, definition] of orderItemColumns) {
+    const [rows] = await database.query<any[]>(`SELECT COUNT(*) AS count FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='order_items' AND COLUMN_NAME=?`, [name]);
+    if (Number(rows[0]?.count ?? 0) === 0) { try { await database.execute(`ALTER TABLE order_items ADD COLUMN \`${name}\` ${definition}`); } catch {} }
+  }
+  try { await database.execute(`ALTER TABLE products MODIFY COLUMN email_template LONGTEXT NULL`); } catch {}
+  await database.execute(`CREATE TABLE IF NOT EXISTS stripe_webhook_events (id BIGINT AUTO_INCREMENT PRIMARY KEY, event_id VARCHAR(191) NOT NULL UNIQUE, event_type VARCHAR(191) NOT NULL, payload LONGTEXT NULL, processed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, INDEX idx_stripe_event_type(event_type)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4`);
+
   // Add foreign keys only when the columns exist and the constraint is not already present.
   const fkChecks = [
     ["fk_services_plan", "ALTER TABLE services ADD CONSTRAINT fk_services_plan FOREIGN KEY(plan_id) REFERENCES product_plans(id) ON DELETE SET NULL"],

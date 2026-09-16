@@ -1,10 +1,5 @@
-node_modules/
-.next/
-.runtime/
-.env
-.env.*
-!.env.example
-
-uploads/
-*.log
+node_modules
+.next
+.runtime/*
+!.runtime/.gitkeep
 npm-debug.log*

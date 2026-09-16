@@ -4,7 +4,7 @@ import Brand from "@/components/Brand";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type Active = "dashboard" | "services" | "invoices" | "tickets" | "account";
+type Active = "dashboard" | "orders" | "services" | "invoices" | "tickets" | "account";
 
 type ClientUser = { id?: number; name?: string; email?: string; role?: string };
 
@@ -21,6 +21,7 @@ function Icon({ name }: { name: string }) {
   const common = { width: 16, height: 16, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   const paths: Record<string, React.ReactNode> = {
     dashboard: <><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></>,
+    orders: <><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></>,
     services: <><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M8 6V4h8v2M8 11h8M8 15h5"/></>,
     invoices: <><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z"/><path d="M9 8h6M9 12h6"/></>,
     tickets: <><path d="M4 14v-3a8 8 0 0 1 16 0v3"/><path d="M4 14h3v5H5a1 1 0 0 1-1-1v-4ZM20 14h-3v5h2a1 1 0 0 1 1-1v-4Z"/></>,
@@ -67,6 +68,7 @@ export default function ClientShell({ children, active }: { children: React.Reac
 
   const topNav = [
     ["dashboard", "Tableau de bord", "/client", "dashboard"],
+    ["orders", "Commandes", "/client/orders", "orders"],
     ["services", "Services", "/client/services", "services"],
     ["invoices", "Factures", "/client/invoices", "invoices"],
     ["tickets", "Tickets", "/client/tickets", "tickets"],
